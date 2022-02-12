@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0046)file:///Users/yoonsoojong/Downloads/index.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<style>  
+body{
+	background-image: url("image.jpg");
+	background-position: center;
+    background-origin: content-box;
+    background-size: auto !important;
+	min-height:100vh;
+	font-family: 'Noto Sans', sans-serif;
+}
+
+.text-center{
+	color:#fff;	
+	text-transform:uppercase;
+    font-size: 1.7em;
+    margin: 10px 0 80px 0;
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    width:400px;
+}
+.box{
+	position:absolute;
+	left:50%;
+	top:50%;
+	transform: translate(-50%,-50%);
+    background-color: rgba(0, 0, 0, 0.89);
+	border-radius:3px;
+	padding:30px 40px;
+    text-align: center;
+}
+.input-container{
+	position:relative;
+	margin-bottom:25px;
+}
+.input-container label{
+	position:absolute;
+	top:0px;
+	left:0px;
+	font-size:1.3em;
+	color:#fff;	
+    pointer-event:none;
+	transition: all 0.5s ease-in-out;
+}
+.input-container input{ 
+  border:0;
+  border-bottom:1px solid #555;  
+  background:transparent;
+  width:100%;
+  padding:8px 0 5px 0;
+  font-size:1.3em;
+  color:#fff;
+}
+.input-container input:focus{ 
+ border:none;	
+ outline:none;
+ border-bottom:1px solid #d76081;	
+}
+.btn{
+	color:#fff;
+	background-color:#d76081;
+	outline: none;
+    border: 0;
+    color: #fff;
+	padding:10px 20px;
+	text-transform:uppercase;
+    margin:0 auto;
+	margin-top:50px;
+	border-radius:2px;
+	cursor:pointer;
+	position:relative;
+    font-size:1.2em;
+}
+.input-container input:focus ~ label,
+.input-container input:valid ~ label{
+	top:-12px;
+	font-size:0.9em;
+	
+}
+
+#result{
+	position:absolute;
+	left:50%;
+	top:50%;
+	transform: translate(-50%,-50%);
+    background-color: rgba(255, 255, 255, 0.89);
+	border-radius:3px;
+	padding:30px 20px;
+    text-align: center;
+}
+
+.tablewrap {padding:20px 50px;}
+    table { border-collapse: collapse; text-align: left; line-height: 1.5; font-size:0.8em;display: block;
+    overflow-x: auto;
+    white-space: nowrap;padding-bottom:15px;}
+    table th { padding: 10px; font-weight: bold; vertical-align: top; border: 1px solid #ccc; width:8em;}
+    table td { padding: 10px; vertical-align: top; border: 1px solid #ccc; }
+    #result button {background-color:#555454;margin-top:10px;}
+
+    @media screen and (max-width:600px) {
+/* 모바일 */
+.tablewrap {width:300px;padding:20px 10px;}
+.text-center{width:210px;}
+}
+    </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+
+    $("#result").hide();
+    $("#ok").click(function(){$("#result").hide();});
+
+    $("#search").click(function(){
+        $("#result table").html("<th>폼 입력시간</th><th>1. 입금자명</th><th>2. 입금 시각</th><th>3. 윤목 개수</th><th>4. 배송명</th><th>5. 배송지</th><th>6. 연락처</th><th>7. 현금영수증 번호</th><th>8. 환불계좌은행</th><th>8. 환불계좌번호</th><th>8. 환불계좌명</th>");
+        $.ajax({
+            url: "https://ssproxy.ucloudbiz.olleh.com/v1/AUTH_46ed110b-5390-41b0-b65c-28ec9693d7eb/som/tka/"+$("#name").val()+"-"+$("#phone").val()+".json", 
+            type: "GET",
+            data: {}, 
+            success: 
+            function(data, status) { 
+                if (status) {
+                    var res = ""
+                    if (data.length == 0) alert("다시 입력해주세요");
+                    data.forEach(function(element){
+                        res += "<tr>";
+                        res += "<td>" + element.timestamp + "</td>";
+                        res += "<td>" + element.name + "</td>";
+                        res += "<td>" + element.time + "</td>";
+                        res += "<td>" + element.number + "</td>";
+                        res += "<td>" + element.s_name + "</td>";
+                        res += "<td>" + element.s_addr + "</td>";
+                        res += "<td>" + element.s_phone + "</td>";
+                        res += "<td>" + element.r_phone + "</td>";
+                        res += "<td>" + element.a_bank + "</td>";
+                        res += "<td>" + element.a_number + "</td>";
+                        res += "<td>" + element.a_name + "</td>";
+                        res += "</tr>";
+                    });
+                    $("#result table").append(res);
+
+                    $("#result").show();
+                } else {
+                    alert("다시 입력해주세요");
+                }
+            }, 
+            error: function(req, status, error){
+                alert("다시 입력해주세요");
+            }
+        });
+    });
+});
+</script>
+</head>
+
+<body>
+    <div id="container">
+
+    <div class="box">
+        <form>
+            <span class="text-center">윤목 공구<br>입금 폼 입력 데이터 확인<br><font style="font-size:0.5em;font-weight:normal;color:#d76081;">(2022년 2월 13일 00:00 반영)</font></span>
+        <div class="input-container">
+            <input type="text" required="" id="name"/>
+            <label>이름</label>		
+        </div>
+        <div class="input-container">		
+            <input type="mail" required="" id="phone"/>
+            <label>연락처(-제외)</label>
+        </div>
+            <button type="button" class="btn" id="search">검색</button>
+    </form>	
+    </div>
+
+    <div id="result">
+        <div class="tablewrap">
+            <table class="table">
+                <th>폼 입력시간</th>
+                <th>1. 입금자명</th>
+                <th>2. 입금 시각</th>
+                <th>3. 윤목 개수</th>
+                <th>4. 배송명</th>
+                <th>5. 배송지</th>
+                <th>6. 연락처</th>
+                <th>7. 현금영수증 번호</th>
+                <th>8. 환불계좌은행명</th>
+                <th>8. 환불계좌번호</th>
+                <th>8. 환불계좌명</th>
+            </table>
+        </div>
+        <button type="button" class="btn" id="ok">확인</button>
+    </div>
+</div>
+</body></html>
